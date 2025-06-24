@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -12,7 +11,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TYYJ79T4VD"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
+    function gtag(){ dataLayer.push(arguments); }
     gtag('js', new Date());
     gtag('config', 'G-TYYJ79T4VD');
   </script>
@@ -39,40 +38,30 @@
     </div>
   </main>
 
-  <!-- IP Logging Script (Silent) -->
+  <!-- IP Logging Script -->
   <script>
-    function getBrowserInfo() {
-      const ua = navigator.userAgent;
-      if (ua.includes("Chrome")) return "Chrome";
-      if (ua.includes("Firefox")) return "Firefox";
-      if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
-      if (ua.includes("Edg")) return "Edge";
-      return "Other";
-    }
-
-    fetch("https://ipapi.co/json/")
+    fetch('https://ipapi.co/json/')
       .then(res => res.json())
       .then(data => {
         const payload = {
           ip: data.ip,
           country: data.country_name,
           city: data.city,
-          browser: getBrowserInfo()
+          browser: navigator.userAgent
         };
 
-        fetch("https://script.google.com/macros/s/AKfycbxAORiCxYGOGfPjhRgRppYaxhDfaT9112zHs3vD6pa48XvM_DL3os28pIAMXnnjhv43/exec", {
-          method: "POST",
+        fetch('https://script.google.com/macros/s/AKfycbxAORiCxYGOGfPjhRgRppYaxhDfaT9112zHs3vD6pa48XvM_DL3os28pIAMXnnjhv43/exec', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(payload)
         });
       })
-      .catch(err => {
-        // لا تظهر أي رسائل للمستخدم
-        console.error("IP tracking error:", err);
+      .catch(error => {
+        // بدون رسائل للزائر
+        console.error('خطأ في تسجيل IP:', error);
       });
   </script>
 </body>
-
 </html>
