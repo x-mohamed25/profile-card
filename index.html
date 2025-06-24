@@ -40,14 +40,13 @@
 
   <!-- IP Logging Script -->
   <script>
-    // أولاً نتأكد إن DOM جاهز
     window.addEventListener('load', () => {
-      fetch('https://ipapi.co/json/')
+      fetch('https://api.db-ip.com/v2/free/self')
         .then(res => res.json())
         .then(data => {
           const payload = {
-            ip: data.ip || "N/A",
-            country: data.country_name || "N/A",
+            ip: data.ipAddress || "N/A",
+            country: data.countryName || "N/A",
             city: data.city || "N/A",
             browser: navigator.userAgent || "N/A"
           };
@@ -61,12 +60,12 @@
           })
           .then(res => res.text())
           .then(response => {
-            console.log('تم الإرسال إلى الشيت:', response);
+            console.log('✅ تم الإرسال إلى الشيت:', response);
           })
-          .catch(err => console.error('خطأ في الإرسال:', err));
+          .catch(err => console.error('❌ خطأ في الإرسال:', err));
         })
         .catch(error => {
-          console.error('خطأ في جلب IP:', error);
+          console.error('❌ خطأ في جلب IP:', error);
         });
     });
   </script>
