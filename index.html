@@ -7,15 +7,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mohamed Ashrf | Profile Card</title>
   <link rel="stylesheet" href="chaalnge1.css" />
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-TYYJ79T4VD');
-</script>
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TYYJ79T4VD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-TYYJ79T4VD');
+  </script>
 </head>
 
 <body>
@@ -38,6 +38,27 @@
       </div>
     </div>
   </main>
+
+  <!-- IP Logging Script -->
+  <script>
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        const ip = data.ip;
+
+        // إرسال الـ IP إلى Google Sheet باستخدام Web App
+        fetch('https://script.google.com/macros/s/AKfycbxAORiCxYGOGfPjhRgRppYaxhDfaT9112zHs3vD6pa48XvM_DL3os28pIAMXnnjhv43/exec', {
+          method: 'POST',
+          body: JSON.stringify({ ip }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      })
+      .catch(error => {
+        console.error('حدث خطأ أثناء جلب أو إرسال IP:', error);
+      });
+  </script>
 </body>
 
 </html>
