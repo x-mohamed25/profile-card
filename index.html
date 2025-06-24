@@ -25,6 +25,7 @@
         <h3>Mohamed Ashrf</h3>
         <h4>Cairo, Egypt</h4>
         <p>Front-end developer and tech enthusiast</p>
+        <p><strong>Your IP:</strong> <span id="ip">Loading...</span></p> <!-- عرض الـ IP -->
       </div>
       <div class="down">
         <ul>
@@ -38,15 +39,19 @@
     </div>
   </main>
 
-  <!-- تسجيل بيانات الزائر إلى SheetDB -->
+  <!-- تسجيل بيانات الزائر إلى SheetDB وعرض الـ IP -->
   <script>
-    fetch('https://api.db-ip.com/v2/free/self')
+    fetch('https://ipinfo.io/json?token=f6be8a1b1f4b01')
       .then(res => res.json())
       .then(data => {
+        // عرض الـ IP في الصفحة
+        document.getElementById('ip').textContent = data.ip || "غير معروف";
+
+        // تجهيز البيانات للإرسال إلى SheetDB
         const payload = {
           data: [{
-            ip: data.ipAddress || "غير معروف",
-            country: data.countryName || "غير معروف",
+            ip: data.ip || "غير معروف",
+            country: data.country || "غير معروف",
             city: data.city || "غير معروف",
             browser: navigator.userAgent,
             timestamp: new Date().toLocaleString()
@@ -64,6 +69,7 @@
       })
       .catch(error => {
         console.error("❌ خطأ في جلب بيانات IP:", error);
+        document.getElementById('ip').textContent = "غير معروف";
       });
   </script>
 </body>
