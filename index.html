@@ -8,7 +8,7 @@
   <title>Mohamed Ashrf | Profile Card</title>
   <link rel="stylesheet" href="chaalnge1.css" />
 
-  <!-- Google tag (gtag.js) -->
+  <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TYYJ79T4VD"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -39,24 +39,38 @@
     </div>
   </main>
 
-  <!-- IP Logging Script -->
+  <!-- IP Logging Script (Silent) -->
   <script>
-    fetch('https://ipapi.co/json/')
+    function getBrowserInfo() {
+      const ua = navigator.userAgent;
+      if (ua.includes("Chrome")) return "Chrome";
+      if (ua.includes("Firefox")) return "Firefox";
+      if (ua.includes("Safari") && !ua.includes("Chrome")) return "Safari";
+      if (ua.includes("Edg")) return "Edge";
+      return "Other";
+    }
+
+    fetch("https://ipapi.co/json/")
       .then(res => res.json())
       .then(data => {
-        const ip = data.ip;
+        const payload = {
+          ip: data.ip,
+          country: data.country_name,
+          city: data.city,
+          browser: getBrowserInfo()
+        };
 
-        // إرسال الـ IP إلى Google Sheet باستخدام Web App
-        fetch('https://script.google.com/macros/s/AKfycbxAORiCxYGOGfPjhRgRppYaxhDfaT9112zHs3vD6pa48XvM_DL3os28pIAMXnnjhv43/exec', {
-          method: 'POST',
-          body: JSON.stringify({ ip }),
+        fetch("https://script.google.com/macros/s/AKfycbxAORiCxYGOGfPjhRgRppYaxhDfaT9112zHs3vD6pa48XvM_DL3os28pIAMXnnjhv43/exec", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json'
-          }
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
         });
       })
-      .catch(error => {
-        console.error('حدث خطأ أثناء جلب أو إرسال IP:', error);
+      .catch(err => {
+        // لا تظهر أي رسائل للمستخدم
+        console.error("IP tracking error:", err);
       });
   </script>
 </body>
