@@ -38,36 +38,33 @@
     </div>
   </main>
 
-  <!-- IP Logging Script -->
+  <!-- تسجيل بيانات الزائر إلى SheetDB -->
   <script>
-    window.addEventListener('load', () => {
-      fetch('https://api.db-ip.com/v2/free/self')
-        .then(res => res.json())
-        .then(data => {
-          const payload = {
-            ip: data.ipAddress || "N/A",
-            country: data.countryName || "N/A",
-            city: data.city || "N/A",
-            browser: navigator.userAgent || "N/A"
-          };
+    fetch('https://api.db-ip.com/v2/free/self')
+      .then(res => res.json())
+      .then(data => {
+        const payload = {
+          data: [{
+            ip: data.ipAddress || "غير معروف",
+            country: data.countryName || "غير معروف",
+            city: data.city || "غير معروف",
+            browser: navigator.userAgent,
+            timestamp: new Date().toLocaleString()
+          }]
+        };
 
-          fetch('https://script.google.com/macros/s/AKfycbxAORiCxYGOGfPjhRgRppYaxhDfaT9112zHs3vD6pa48XvM_DL3os28pIAMXnnjhv43/exec', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-          })
-          .then(res => res.text())
-          .then(response => {
-            console.log('✅ تم الإرسال إلى الشيت:', response);
-          })
-          .catch(err => console.error('❌ خطأ في الإرسال:', err));
+        fetch('https://sheetdb.io/api/v1/wemhnpormm0cu', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
         })
-        .catch(error => {
-          console.error('❌ خطأ في جلب IP:', error);
-        });
-    });
+        .then(res => res.json())
+        .then(() => console.log("✅ تم حفظ البيانات في SheetDB"))
+        .catch(err => console.error("❌ خطأ في الإرسال إلى SheetDB:", err));
+      })
+      .catch(error => {
+        console.error("❌ خطأ في جلب بيانات IP:", error);
+      });
   </script>
 </body>
 </html>
